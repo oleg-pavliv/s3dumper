@@ -1,6 +1,5 @@
 // coredns-s3dumper/uploader.go
 package s3dumper
-/*
 
 import (
 	"bytes"
@@ -87,91 +86,3 @@ func (u *S3Uploader) generateS3Key() string {
 		filename,
 	)
 }
-*/
-
-/*
-// coredns-s3dumper/uploader.go
-package s3dumper
-
-import (
-	"bytes"
-	"compress/gzip"
-	"context"
-	"encoding/json"
-	"fmt"
-	"log"
-	"path"
-	"time"
-
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/google/uuid"
-)
-
-// S3Uploader handles uploading logs to S3.
-type S3Uploader struct {
-	Client *s3.Client
-	Bucket string
-	Prefix string
-}
-
-// Upload marshals, compresses, and uploads log entries to S3.
-func (u *S3Uploader) Upload(entries []*LogEntry) {
-	if len(entries) == 0 {
-		return
-	}
-
-	// 1. Marshal to JSON
-	jsonData, err := json.Marshal(entries)
-	if err != nil {
-		log.Printf("[ERROR] s3dumper: failed to marshal log entries: %v", err)
-		return
-	}
-
-	// 2. Gzip compress the data
-	var compressedData bytes.Buffer
-	gz := gzip.NewWriter(&compressedData)
-	if _, err := gz.Write(jsonData); err != nil {
-		log.Printf("[ERROR] s3dumper: failed to gzip log data: %v", err)
-		return
-	}
-	if err := gz.Close(); err != nil {
-		log.Printf("[ERROR] s3dumper: failed to close gzip writer: %v", err)
-		return
-	}
-
-	// 3. Generate a unique key for the S3 object
-	key := u.generateS3Key()
-
-	// 4. Upload to S3
-	_, err = u.Client.PutObject(context.TODO(), &s3.PutObjectInput{
-		Bucket:          aws.String(u.Bucket),
-		Key:             aws.String(key),
-		Body:            bytes.NewReader(compressedData.Bytes()),
-		ContentEncoding: aws.String("gzip"),
-		ContentType:     aws.String("application/json"),
-	})
-
-	if err != nil {
-		log.Printf("[ERROR] s3dumper: failed to upload logs to S3 bucket %s with key %s: %v", u.Bucket, key, err)
-	} else {
-		log.Printf("[INFO] s3dumper: successfully uploaded %d log entries to s3://%s/%s", len(entries), u.Bucket, key)
-	}
-}
-
-// generateS3Key creates a unique, time-partitioned key.
-// Example: prefix/2023/10/27/1698429600-uuid.json.gz
-func (u *S3Uploader) generateS3Key() string {
-	now := time.Now().UTC()
-	uuid, _ := uuid.NewRandom()
-	filename := fmt.Sprintf("%d-%s.json.gz", now.UnixNano(), uuid.String())
-	return path.Join(
-		u.Prefix,
-		now.Format("2006"), // Year
-		now.Format("01"),   // Month
-		now.Format("02"),   // Day
-		filename,
-	)
-}
-*/
-

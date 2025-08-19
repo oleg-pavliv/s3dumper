@@ -22,14 +22,12 @@ type Uploader interface {
 // S3Dumper is the main plugin struct.
 type S3Dumper struct {
 	Next          plugin.Handler
-	Uploader      Uploader // <--- CHANGED: Use the interface
+	Uploader      Uploader
 	Buffer        *LogBuffer
 	FlushInterval time.Duration
 
 	stop chan struct{}
 }
-
-// ... (The rest of s3dumper.go remains EXACTLY the same) ...
 
 // Name implements the plugin.Handler interface.
 func (s *S3Dumper) Name() string { return "s3dumper" }

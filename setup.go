@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	_"github.com/aws/aws-sdk-go-v2/config"
-	_"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/coredns/caddy"
 	"github.com/coredns/coredns/core/dnsserver"
 	"github.com/coredns/coredns/plugin"
@@ -53,10 +53,6 @@ func parseConfig(c *caddy.Controller) (*S3Dumper, error) {
 	prefix := "coredns-logs"
 	region := ""
 	localPath := ""
-
-    _ = bucket
-    _ = prefix
-    _ = region
 
 	for c.Next() { // Skip the plugin name
 		for c.NextBlock() {
@@ -122,8 +118,8 @@ func parseConfig(c *caddy.Controller) (*S3Dumper, error) {
 	var err error
 
 	switch storageType {
-        /*
-	case "s3":
+
+    case "s3":
 		if bucket == "" || region == "" {
 			return nil, c.Err("for 's3' storage, 'bucket' and 'region' must be specified")
 		}
@@ -137,7 +133,6 @@ func parseConfig(c *caddy.Controller) (*S3Dumper, error) {
 			Prefix: prefix,
 		}
 		log.Printf("[INFO] s3dumper: configured 's3' storage for bucket '%s' in region '%s'", bucket, region)
-*/
 	case "local":
 		if localPath == "" {
 			return nil, c.Err("for 'local' storage, 'local_path' must be specified")
