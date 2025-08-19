@@ -99,3 +99,11 @@ func (p *ParquetFileWrapper) Open(name string) (source.ParquetFile, error) {
     return &ParquetFileWrapper{File: file}, nil
 }
 
+// generateFilename creates a unique, time-based filename.
+// Example: 1698429600-uuid.json.gz
+func (u *LocalUploader) generateFilename() string {
+       now := time.Now().UTC()
+       uuid, _ := uuid.NewRandom()
+       return fmt.Sprintf("%d-%s.json.gz", now.UnixNano(), uuid.String())
+}
+
