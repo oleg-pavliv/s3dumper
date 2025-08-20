@@ -1,0 +1,15 @@
+tls://.:8853 {
+    # Dump DNS requests to the local filesystem
+    s3dumper {
+        storage_type   local
+        local_path     /home/oleg/tmp/coredns_logs  # Required: The directory to save logs to
+        batch_size     50                 # Optional: Flush after 50 requests
+        flush_interval 10s                # Optional: Or flush every 10 seconds
+    }
+
+    # Other plugins
+    forward . 8.8.8.8
+#    log
+    errors
+    tls cert.pem key.pem
+}
